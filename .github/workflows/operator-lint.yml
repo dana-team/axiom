@@ -1,0 +1,36 @@
+name: Operator Lint
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize]
+    paths:
+      - 'operator/**'
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+
+jobs:
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: operator
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: operator/go.mod
+
+      - name: Run vet
+        run: go vet ./...
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          working-directory: operator
+          args: --timeout=2m

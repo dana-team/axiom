@@ -1,0 +1,14 @@
+apiVersion: record.dns-v2.m.crossplane.io/v1alpha1
+kind: CNAMERecord
+metadata:
+  name: {{ .Values.route.host }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  forProvider:
+    cname: ingress.{{.Values.route.cluster}}.
+    name: {{.Values.route.host | replace .Values.route.domain "" | replace "." ""}}
+    ttl: 3600
+    zone: {{ .Values.route.domain }}.
+  providerConfigRef:
+    kind: ClusterProviderConfig
+    name: {{ .Values.providerConfig.name }}

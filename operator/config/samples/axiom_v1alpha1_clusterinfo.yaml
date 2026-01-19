@@ -1,0 +1,10 @@
+apiVersion: axiom.dana.io/v1alpha1
+kind: ClusterInfo
+metadata:
+  labels:
+    app.kubernetes.io/name: axiom-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: clusterinfo-sample
+spec:
+  isHostedCluster: true
+  # TODO(user): Add fields here
