@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	github.com/dana-team/axiom-operator v0.0.6
-	github.com/go-logr/logr v1.4.2
+	github.com/go-logr/logr v1.4.3
 	github.com/nmstate/kubernetes-nmstate/api v0.0.0-20251230061407-6e200ad5c938
 	github.com/onsi/ginkgo/v2 v2.22.1
 	github.com/onsi/gomega v1.36.2
@@ -13,7 +13,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/api v0.32.1
 	k8s.io/apimachinery v0.32.1
-	k8s.io/client-go v0.32.1
+	k8s.io/client-go v12.0.0+incompatible
 	sigs.k8s.io/controller-runtime v0.20.2
 )
 
