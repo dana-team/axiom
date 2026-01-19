@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "axiom-operator.fullname" . }}-clusterinfo-viewer-role
+  labels:
+  {{- include "axiom-operator.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - axiom.dana.io
+  resources:
+  - clusterinfo
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - axiom.dana.io
+  resources:
+  - clusterinfo/status
+  verbs:
+  - get

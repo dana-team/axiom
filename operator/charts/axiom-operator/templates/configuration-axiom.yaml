@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.config.name }}
+  labels:
+    {{- include "axiom-operator.labels" . | nindent 4 }}
+data:
+  MONGO_URI: {{ .Values.config.mongoUrl | quote }}
+  DNS_READER_IMAGE: {{ .Values.config.dnsReaderImage | quote }}
+  POD_NAMESPACE: {{ .Values.config.dnsReaderNamespace | quote }}
+  NETBOX_URL: {{ .Values.config.netboxURL | quote }}
+  NETBOX_TOKEN: {{ .Values.config.netboxToken | quote }}
+

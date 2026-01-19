@@ -1,0 +1,74 @@
+version: 2
+updates:
+  # Backend
+  - package-ecosystem: "gomod"
+    directory: "/backend"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+    labels:
+      - "backend"
+      - "go"
+      - "dependencies"
+
+  - package-ecosystem: "docker"
+    directory: "/backend"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+    labels:
+      - "backend"
+      - "docker"
+      - "dependencies"
+
+  # Operator
+  - package-ecosystem: "gomod"
+    directory: "/operator"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+    labels:
+      - "operator"
+      - "go"
+      - "dependencies"
+
+  - package-ecosystem: "docker"
+    directory: "/operator"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+    labels:
+      - "operator"
+      - "docker"
+      - "dependencies"
+
+  # UI
+  - package-ecosystem: "npm"
+    directory: "/ui"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+    labels:
+      - "ui"
+      - "javascript"
+      - "dependencies"
+
+  - package-ecosystem: "docker"
+    directory: "/ui"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+    labels:
+      - "ui"
+      - "docker"
+      - "dependencies"
+
+  # GitHub Actions (Root)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 10
+    labels:
+      - "ci"
+      - "github-actions"

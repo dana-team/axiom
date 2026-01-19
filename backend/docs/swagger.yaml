@@ -1,0 +1,67 @@
+basePath: /v1
+definitions:
+  types.APIResponse:
+    properties:
+      count:
+        type: integer
+      data: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+info:
+  contact: {}
+  description: Backend service for Axiom cluster management.
+  title: Axiom Backend API
+  version: "1.0"
+paths:
+  /clusters:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of clusters with optional filtering and pagination
+      parameters:
+      - description: Cluster ID
+        in: query
+        name: clusterId
+        type: string
+      - description: Kubernetes Version
+        in: query
+        name: kubeVersion
+        type: string
+      - description: Cluster Name
+        in: query
+        name: name
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Sort By
+        in: query
+        name: sortBy
+        type: string
+      - description: Sort Order
+        in: query
+        name: sortOrder
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.APIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/types.APIResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/types.APIResponse'
+      summary: Get Clusters
+      tags:
+      - clusters
+swagger: "2.0"

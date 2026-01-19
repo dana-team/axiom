@@ -1,0 +1,137 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.17.2
+  name: clusterinfo.axiom.dana.io
+spec:
+  group: axiom.dana.io
+  names:
+    kind: ClusterInfo
+    listKind: ClusterInfoList
+    plural: clusterinfo
+    shortNames:
+    - ci
+    singular: clusterinfo
+  scope: Cluster
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: ClusterInfo is the Schema for the clusterinfoes API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ClusterInfoSpec defines the desired state of ClusterInfo.
+            properties:
+              hostedCluster:
+                type: boolean
+            type: object
+          status:
+            properties:
+              apiServerAddresses:
+                items:
+                  type: string
+                type: array
+              clusterDnsConfig:
+                properties:
+                  searchDomains:
+                    items:
+                      type: string
+                    type: array
+                  servers:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              clusterID:
+                type: string
+              clusterResources:
+                description: ClusterResources describes resource capacity of the cluster.
+                properties:
+                  cpu:
+                    type: string
+                  gpu:
+                    type: string
+                  memory:
+                    type: string
+                  pods:
+                    type: string
+                  storage:
+                    type: string
+                type: object
+              identityProviders:
+                items:
+                  type: string
+                type: array
+              kubernetesVersion:
+                type: string
+              mutatingWebhooks:
+                items:
+                  type: string
+                type: array
+              name:
+                type: string
+              nodeInfo:
+                items:
+                  description: NodeInfo holds information about a node
+                  properties:
+                    hostname:
+                      type: string
+                    internalIP:
+                      type: string
+                    kubeletVersion:
+                      type: string
+                    name:
+                      type: string
+                    osImage:
+                      type: string
+                  type: object
+                type: array
+              routerLBAddress:
+                items:
+                  type: string
+                type: array
+              segments:
+                items:
+                  type: string
+                type: array
+              storageProvisioners:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    provisioner:
+                      type: string
+                  required:
+                  - name
+                  - provisioner
+                  type: object
+                type: array
+              validatingWebhooks:
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
