@@ -9,7 +9,7 @@ env:
   # Image: ghcr.io/dana-team/axiom/backend
   IMAGE_NAME: dana-team/axiom/backend
   # Chart: ghcr.io/dana-team/helm-charts/axiom/backend
-  CHART_REGISTRY: ghcr.io/dana-team/helm-charts/axiom/backend
+  CHART_REGISTRY: ghcr.io/dana-team/helm-charts/axiom
 
 jobs:
   build-and-push-image:
@@ -48,7 +48,7 @@ jobs:
       - name: Build & Push image
         uses: docker/build-push-action@v6
         with:
-          context: backend
+          context: .
           file: backend/Dockerfile
           platforms: linux/amd64
           push: true
@@ -78,11 +78,11 @@ jobs:
           version: v3.15.0
 
       - name: Helm lint
-        run: helm lint charts/axiom-backend
+        run: helm lint charts/backend
 
       - name: Helm package
         run: |
-          helm package charts/axiom-backend \
+          helm package charts/backend \
             --version ${{ github.event.release.tag_name }} \
             --app-version ${{ github.event.release.tag_name }}
 
@@ -95,8 +95,8 @@ jobs:
 
       - name: Helm push
         run: |
-          # The chart package will be named axiom-backend-<version>.tgz
-          PKG_NAME=axiom-backend-${{ github.event.release.tag_name }}.tgz
+          # The chart package will be named backend-<version>.tgz
+          PKG_NAME=backend-${{ github.event.release.tag_name }}.tgz
           helm push ${PKG_NAME} oci://${{ env.CHART_REGISTRY }}
         env:
           HELM_REGISTRY_CONFIG: ~/.docker/config.json

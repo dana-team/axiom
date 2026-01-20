@@ -9,7 +9,7 @@ env:
   # Image: ghcr.io/dana-team/axiom/ui
   IMAGE_NAME: dana-team/axiom/ui
   # Chart: ghcr.io/dana-team/helm-charts/axiom/ui
-  CHART_REGISTRY: ghcr.io/dana-team/helm-charts/axiom/ui
+  CHART_REGISTRY: ghcr.io/dana-team/helm-charts/axiom
 
 jobs:
   build-and-push-image:
@@ -104,11 +104,11 @@ jobs:
           version: v3.15.0
 
       - name: Helm lint
-        run: helm lint charts/axiom-ui
+        run: helm lint charts/ui
 
       - name: Helm package
         run: |
-          helm package charts/axiom-ui \
+          helm package charts/ui \
             --version ${{ github.event.release.tag_name }} \
             --app-version ${{ github.event.release.tag_name }}
 
@@ -121,8 +121,8 @@ jobs:
 
       - name: Helm push
         run: |
-          # The chart package will be named axiom-ui-<version>.tgz
-          PKG_NAME=axiom-ui-${{ github.event.release.tag_name }}.tgz
+          # The chart package will be named ui-<version>.tgz
+          PKG_NAME=ui-${{ github.event.release.tag_name }}.tgz
           helm push ${PKG_NAME} oci://${{ env.CHART_REGISTRY }}
         env:
           HELM_REGISTRY_CONFIG: ~/.docker/config.json

@@ -64,7 +64,7 @@ func (r *ClusterInfoReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	}
 
 	if err := status.UpdateClusterInfoStatus(ctx, logger, *clusterInfo, r.Client); err != nil {
-		return ctrl.Result{}, fmt.Errorf("Failed to update ClusterInfo status %s", err.Error())
+		return ctrl.Result{}, fmt.Errorf("failed to update ClusterInfo status %s", err.Error())
 	}
 	logger.Info("ClusterInfo status updated successfully")
 
