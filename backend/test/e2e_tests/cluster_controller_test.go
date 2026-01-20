@@ -1,6 +1,7 @@
 package e2e_tests
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -22,9 +23,11 @@ var _ = Describe("ClusterController", func() {
 		mongoClient *utils.MongoClient
 		collection  *mongo.Collection
 		recorder    *httptest.ResponseRecorder
+		ctx         context.Context
 	)
 
 	BeforeEach(func() {
+		ctx = context.TODO()
 		// Set Gin to test mode
 		gin.SetMode(gin.TestMode)
 
@@ -52,14 +55,14 @@ var _ = Describe("ClusterController", func() {
 
 	AfterEach(func() {
 		// Clean up the test database
-		Expect(collection.Drop(nil)).To(Succeed())
+		Expect(collection.Drop(ctx)).To(Succeed())
 		Expect(mongoClient.Disconnect()).To(Succeed())
 	})
 
 	Context("GetClusters", func() {
 		BeforeEach(func() {
 			// Insert test data
-			_, err := collection.InsertMany(nil, testutils.TestClusters)
+			_, err := collection.InsertMany(ctx, testutils.TestClusters)
 			Expect(err).NotTo(HaveOccurred())
 		})
 
