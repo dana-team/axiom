@@ -96,7 +96,7 @@ jobs:
       - name: Helm push
         run: |
           # The chart package will be named backend-<version>.tgz
-          PKG_NAME=backend-${{ github.event.release.tag_name }}.tgz
+          PKG_NAME=axiom-backend-${{ github.event.release.tag_name }}.tgz
           helm push ${PKG_NAME} oci://${{ env.CHART_REGISTRY }}
         env:
           HELM_REGISTRY_CONFIG: ~/.docker/config.json
