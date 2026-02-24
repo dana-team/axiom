@@ -2,12 +2,12 @@ package status
 
 import (
 	"context"
-	"reflect"
-
 	"github.com/dana-team/axiom/operator/api/v1alpha1"
 	"github.com/dana-team/axiom/operator/internal/controller/common"
 	"github.com/dana-team/axiom/operator/internal/controller/resources"
 	"github.com/go-logr/logr"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"reflect"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -109,5 +109,6 @@ func collectClusterInfo(ctx context.Context, logger logr.Logger, k8sClient clien
 	clusterInfo.MutatingWebhooks = mutatingWebhooks
 	clusterInfo.ValidatingWebhooks = validatingWebhooks
 	clusterInfo.Segments = segments
+	clusterInfo.LastUpdated = metav1.Now()
 	return clusterInfo, nil
 }

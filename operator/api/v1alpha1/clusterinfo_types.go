@@ -17,9 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"sort"
-
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"sort"
 )
 
 // NodeInfo holds information about a node
@@ -73,6 +72,7 @@ type ClusterInfoStatus struct {
 	MutatingWebhooks    []string             `json:"mutatingWebhooks,omitempty" bson:"mutatingWebhooks,omitempty"`
 	ValidatingWebhooks  []string             `json:"validatingWebhooks,omitempty" bson:"validatingWebhooks,omitempty"`
 	Segments            []string             `json:"segments,omitempty" bson:"segments,omitempty"`
+	LastUpdated         metav1.Time          `json:"lastUpdated,omitempty" bson:"lastUpdated,omitempty"`
 }
 
 // +kubebuilder:object:root=true

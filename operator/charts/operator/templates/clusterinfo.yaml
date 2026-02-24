@@ -1,0 +1,6 @@
+apiVersion: axiom.dana.io/v1alpha1
+kind: ClusterInfo
+metadata:
+  name: clusterinfo
+spec:
+  hostedCluster: {{ .Values.hostedCluster }}
