@@ -42,3 +42,4 @@ config:
   dnsReaderNamespace: "axiom-system"
   netboxURL: "netbox.com"
   netboxToken: "token"
+hostedCluster: false

@@ -44,6 +44,7 @@ export type Cluster = {
   mutatingWebhooks: string[];
   validatingWebhooks: string[];
   segments: string[];
+  lastUpdated: string;
 };
 
 export type ClusterDnsConfig = {

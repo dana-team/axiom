@@ -147,7 +147,6 @@ export const ClusterPanel = () => {
   const { clusters } = useStore();
   const { id: clusterId } = useParams<{ id: string }>();
   const cluster = clusters.find((c) => c.clusterID === clusterId);
-  const timestamp = new Date().toLocaleString();
 
   const clusterDetails = [
     { label: "Version", value: cluster?.kubernetesVersion },
@@ -192,7 +191,7 @@ export const ClusterPanel = () => {
         <h1 className="text-2xl font-bold text-foreground">{cluster?.name}</h1>
         <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
           <Clock className="w-4 h-4 text-muted-foreground" />
-          Last updated: {timestamp}
+          Last updated: {cluster?.lastUpdated ? new Date(cluster.lastUpdated).toLocaleString() : "N/A"}
         </p>
       </div>
 

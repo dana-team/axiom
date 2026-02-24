@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"os"
 	"strings"
 	"time"
@@ -63,7 +64,14 @@ func getDNSFromNNCP(ctx context.Context, logger logr.Logger, k8sClient client.Cl
 	}
 
 	nncp := &nmstatev1.NodeNetworkConfigurationPolicy{}
-	if err := k8sClient.Get(ctx, client.ObjectKey{Name: "node-resolver"}, nncp); err != nil {
+	if err := k8sClient.Get(ctx, client.ObjectKey{Name: "node-resolver"}, nncp); err != nil && errors.IsNotFound(err) {
+		if errors.IsNotFound(err) {
+			logger.Info("failed to get NodeNetworkConfigurationPolicy")
+			return v1alpha1.ClusterDnsConfig{
+				SearchDomains: []string{"not found"},
+				Servers:       []string{"not found"},
+			}, nil
+		}
 		logger.Error(err, "failed to get NodeNetworkConfigurationPolicy")
 		return v1alpha1.ClusterDnsConfig{}, err
 	}
