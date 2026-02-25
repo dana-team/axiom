@@ -83,6 +83,9 @@ spec:
                 type: array
               kubernetesVersion:
                 type: string
+              lastUpdated:
+                format: date-time
+                type: string
               mutatingWebhooks:
                 items:
                   type: string
