@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/dana-team/axiom/operator/internal/db"
@@ -73,7 +74,8 @@ func (r *ClusterInfoReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 		db.InsertClusterInfoToMongo(logger, clusterInfo)
 	}(*clusterInfo)
 
-	return ctrl.Result{RequeueAfter: 30 * time.Minute}, nil
+	jitter := time.Duration(rand.Int63n(int64(10 * time.Minute)))
+	return ctrl.Result{RequeueAfter: 25*time.Minute + jitter}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

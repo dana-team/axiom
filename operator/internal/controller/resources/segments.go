@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/dana-team/axiom/operator/api/v1alpha1"
 	"github.com/dana-team/axiom/operator/internal/controller/common"
@@ -19,17 +20,45 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-const ApiPrefix = "/api/ipam/prefixes/"
+const (
+	ApiPrefix                 = "/api/ipam/prefixes/"
+	lastNetBoxFetchAnnotation = "axiom.dana.io/last-netbox-fetch"
+	netboxCacheTTL            = 25 * time.Minute
+)
 
 // GetClusterSegments retrieves network segments for a cluster based on its configuration and node network state.
 // If the cluster is hosted, segments are fetched from an external NetBox API. Otherwise, segments are derived from node configurations.
 // Returns a list of unique segments or an error in case of failure.
 func GetClusterSegments(ctx context.Context, logger logr.Logger, k8sClient client.Client, ci *v1alpha1.ClusterInfo, nodes []corev1.Node, clusterName string) ([]string, error) {
-	if ci.Spec.HostedCluster {
-		return getSegmentsFromNetBox(ctx, logger, clusterName)
+	if !ci.Spec.HostedCluster {
+		return getSegmentsFromNodeNetworkState(ctx, logger, k8sClient, nodes)
 	}
 
-	return getSegmentsFromNodeNetworkState(ctx, logger, k8sClient, nodes)
+	if lastFetchStr, ok := ci.Annotations[lastNetBoxFetchAnnotation]; ok {
+		if lastFetch, err := time.Parse(time.RFC3339, lastFetchStr); err == nil {
+			if age := time.Since(lastFetch); age < netboxCacheTTL {
+				logger.Info("Skipping NetBox request, using cached segments", "age", age.Round(time.Second), "ttl", netboxCacheTTL)
+				return ci.Status.Segments, nil
+			}
+		}
+	}
+
+	segments, err := getSegmentsFromNetBox(ctx, logger, clusterName)
+	if err != nil {
+		logger.Error(err, "NetBox fetch failed, retaining cached segments")
+		return ci.Status.Segments, nil
+	}
+
+	patch := client.MergeFrom(ci.DeepCopy())
+	if ci.Annotations == nil {
+		ci.Annotations = make(map[string]string)
+	}
+	ci.Annotations[lastNetBoxFetchAnnotation] = time.Now().UTC().Format(time.RFC3339)
+	if err := k8sClient.Patch(ctx, ci, patch); err != nil {
+		logger.Error(err, "Failed to update NetBox fetch timestamp annotation")
+	}
+
+	return segments, nil
 }
 
 // getSegmentsFromNetBox retrieves unique network segments from the NetBox API for a specified cluster.
