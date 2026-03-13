@@ -1,0 +1,34 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+  categories:
+    - title: "New Features"
+      labels:
+        - "feature"
+        - "enhancement"
+        - "feat"
+    - title: "Bug Fixes"
+      labels:
+        - "bug"
+        - "fix"
+    - title: "Documentation"
+      labels:
+        - "documentation"
+        - "docs"
+    - title: "Chores"
+      labels:
+        - "chore"
+        - "refactor"
+        - "ci"
+        - "test"
+    - title: "Dependency Updates"
+      labels:
+        - "dependencies"
+        - "go"
+        - "javascript"
+        - "docker"
+        - "github-actions"
+    - title: "Other Changes"
+      labels:
+        - "*"
