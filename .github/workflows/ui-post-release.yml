@@ -77,7 +77,7 @@ jobs:
           EOF
 
       - name: Upload installer values
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             ui/dist/values-installer.yaml
